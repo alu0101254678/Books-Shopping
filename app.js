@@ -7,7 +7,7 @@ var app = express();
 // Ruta principal para verificar la conexión y realizar la conexión a la base de datos
 app.get('/', (req, res) => {
   // Conexión a la base de datos de MongoDB Atlas
-  mongoose.connect('mongodb+srv://alu0101254678:Fin_del_Creador_2022@cluster0.ffwce0q.mongodb.net/tu_basededatos', {
+  mongoose.connect('mongodb+srv://alu0101254678:Fin_del_Creador_2022@cluster0.ffwce0q.mongodb.net/?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
