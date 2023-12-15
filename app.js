@@ -45,9 +45,11 @@ db.once('open', function () {
   console.log('Conexión exitosa a MongoDB Atlas');
 });
 
-// Pasar la conexión a las rutas
+// Pasar el modelo a las rutas
 app.use((req, res, next) => {
-  req.db = db;
+  req.db = {
+    Ejemplo: Ejemplo, // Asegúrate de que Ejemplo esté disponible en req.db
+  };
   next();
 });
 
