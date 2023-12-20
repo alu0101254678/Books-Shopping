@@ -1,36 +1,30 @@
-var express = require('express');
-const mongoose = require('mongoose');
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
 
-var app = express();
+const options = {
+  key: fs.readFileSync(path.join(__dirname, 'privatekey.pem')),
+  cert: fs.readFileSync(path.join(__dirname, 'certificate.pem'))
+};
 
-// Conexión a la base de datos de MongoDB Atlas
-mongoose.connect('mongodb+srv://alu0101254678:Fin_del_Creador_2022@cluster0.ffwce0q.mongodb.net/?retryWrites=true&w=majority', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => {
-    console.log('Conexión exitosa a MongoDB Atlas');
-    res.send('Conexión exitosa a la base de datos');
-  })
-  .catch((error) => {
-    console.error('Error de conexión a MongoDB:', error);
-    res.status(500).send('Error interno del servidor');
-  });
-
-// Ruta principal para verificar la conexión y realizar la conexión a la base de datos
-app.get('/', (req, res) => {
-  res.send('Bienvenido a la API de Books Shopping');
+var mongoClient = require("mongodb").MongoClient;
+mongoClient.connect("mongodb://alu0101254678:Ivlc6PhBZ9i71tj7Q5Jx8b39ZV4b4yccm2Hgwste6YYGcLl3hUSv5YxrNrAiEoUT8UG5fGd2OFeVACDbdeOomg%3D%3D@alu0101254678.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@alu0101254678@", function (err, client) {
+  if (err) {
+    console.error("Error al conectar con la base de datos:", err);
+  } else {
+    console.log("Conexión exitosa a la base de datos", client.PORT);
+    // Realiza aquí cualquier operación relacionada con la base de datos que desees loguear.
+  }
 });
 
-// Manejo de errores 404
-app.use(function (req, res, next) {
-  res.status(404).send('Recurso no encontrado');
+const server = https.createServer(options, (req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Hola, mundo seguro con SSL!\n');
 });
 
-// Manejo de errores generales
-app.use(function (err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send('Error interno del servidor');
+const PORT = 3000;
+
+server.listen(PORT, () => {
+  console.log(`Servidor Node.js con SSL escuchando en el puerto ${PORT}`);
 });
 
-module.exports = app;
